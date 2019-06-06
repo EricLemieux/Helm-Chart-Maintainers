@@ -15,9 +15,11 @@ async function pullHelmChartsRepo() {
   const { stdout, stderr } = await exec(`git clone https://github.com/helm/charts.git`);
 }
 
-function ChartInfo(name, maintainers, deprecated) {
+function ChartInfo(name, maintainers, deprecated, approvers, reviewers) {
   this.name = name,
   this.maintainers = maintainers
+  this.approvers = approvers;
+  this.reviewers = reviewers;
   this.deprecated = deprecated;
 }
 
@@ -31,8 +33,27 @@ async function printChartStatus(chartName) {
     numMaintainers = chart.maintainers.length;
   }
   const isDeprecated = chart.deprecated || false;
+
+
+  let approvers = 0;
+  let reviewers = 0;
+  const ownerFilePath = `${repoFolder}/${chartName}/OWNERS`;
+  try {
+    const ownerFileContents = await fs.readFile(ownerFilePath, 'utf-8');
+    const owners = YAML.parse(ownerFileContents);
+
+    if (owners.approvers) {
+      approvers = owners.approvers.length;
+    }
+    if (owners.reviewers) {
+      reviewers = owners.reviewers.length;
+    }
+  } catch(e) {
+    // File doesn't exist, keep the default of 0.
+  }
+
   
-  return new ChartInfo(chartName, numMaintainers, isDeprecated);
+  return new ChartInfo(chartName, numMaintainers, isDeprecated, approvers, reviewers);
 }
 
 async function describeChartsInFolder(folder) {
