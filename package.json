@@ -1,0 +1,17 @@
+{
+  "name": "helm-chart-maintainers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^8.0.1",
+    "node-fetch": "^2.6.0",
+    "yaml": "^1.6.0"
+  }
+}
