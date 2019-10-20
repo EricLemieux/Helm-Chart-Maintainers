@@ -12,6 +12,6 @@
   "dependencies": {
     "fs-extra": "^8.0.1",
     "node-fetch": "^2.6.0",
-    "yaml": "^1.6.0"
+    "yaml": "^1.7.2"
   }
 }
